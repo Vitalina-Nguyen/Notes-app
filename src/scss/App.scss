@@ -1,0 +1,9 @@
+@use 'reset.scss';
+
+.app-container {
+  background: red;
+  max-width: 930px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+} 
