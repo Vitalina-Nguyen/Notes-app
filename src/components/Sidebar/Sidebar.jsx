@@ -6,12 +6,16 @@ import '../../scss/components/Sidebar.scss';
 //Получить данные (заголовки постов) и замэпить каждый в NavLink 
 
 
-export default function Sidebar( {notes} ) {
+export default function Sidebar( {notes, toggleActive} ) {
 
   const links = notes.map( n => {
+    const id = n.id;
     return (
-      <li>
-        <NavLink to={`/note/workspace/${n.id}`} key= {n.id}>{n.title}</NavLink>
+      <li key={n.id}>
+        <NavLink to={`/note/workspace/${id}`} key= {id} onClick={(e) => {
+          e.preventDefault()
+       
+          toggleActive(id)}}> {n.title} </NavLink>
       </li>
     )
   })

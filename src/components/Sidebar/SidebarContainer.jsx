@@ -7,16 +7,14 @@ export default function SidebarContainer() {
   return (
     <StateContext.Consumer>
       { 
-        store => {
-          const notes = store.getState().map( i => {
-            return (
-              {
+        db => {
+          const notes = db.notes.map( i => {
+            return ({
                 id: i.id,
                 title: i.title
-              }
-            )
+              })
           })
-          return <Sidebar notes= {notes} />
+          return <Sidebar notes= {notes} toggleActive={db.toggleActive} />
         }
       }
     </StateContext.Consumer>

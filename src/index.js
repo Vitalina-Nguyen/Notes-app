@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './state/store';
+import db from './state/db';
 import StateContext from './state/StateContext';
 
 
@@ -11,9 +11,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <StateContext.Provider value={store}>
+    {/* <StateContext.Provider value={}> */}
       <App />
-    </StateContext.Provider>
+    {/* </StateContext.Provider> */}
   </React.StrictMode>
 );
 

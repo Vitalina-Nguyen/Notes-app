@@ -1,5 +1,6 @@
 import React from "react";
 import StateContext from "../../state/StateContext";
+import Workspace from './Workspace'
 
 
 export default function WorkspaceContainer() {
@@ -7,7 +8,10 @@ export default function WorkspaceContainer() {
     <StateContext.Consumer>
       { 
         store => {
-          return <Workspace notes= {store.getState()} />
+          const activeNote = store.getState().forEach(n => {
+            if(n.active) return n;
+          });
+          return <Workspace activeNote= {activeNote} />
         }
       }
     </StateContext.Consumer>
