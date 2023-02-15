@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react';
 
 
-export default function Workspace({activeNote}) {
+
+export default function NoteItem({ activeNote }) {
 
   return (
     <div>
         <h2>
-            {activeNote.title};
+          { activeNote.title } 
         </h2>
         <p>
-            {activeNote.text};
+          { activeNote.text }
         </p>
     </div>
   );

@@ -1,83 +1,73 @@
-import React, { useState } from 'react';
-import Dexie from 'dexie';
+import React, { useContext, useState } from 'react';
 import './scss/App.scss';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SidebarContainer from './components/Sidebar/SidebarContainer';
 import Workspace from './components/Workspace/Workspace';
-  import StateContext from "./state/StateContext";
-import { useLiveQuery } from "dexie-react-hooks";
 import { Button, Space } from 'antd';
-// import db from './state/db';
+import { NotesProvider, NotesContext } from './state/NotesProvider';
+import Sidebar from './components/Sidebar/Sidebar';
 
-const db = new Dexie('NotesBase');
+// const Asdasd = () => {
 
-db.version(1).stores({
-  notes: '++id, title, text, isActive', // Primary key and indexed props
-});
 
-export const { notes } = db;
+//   const notes = useContext(NotesContext);
+//   return (
+//     <div>
+//       {
+//         notes ? notes.map((note) => <div>{note.title}</div>) : 'asdasdasdasdas'
+//       }
+//     </div>
+//   )
+// }
+
 
 
 function App() {
 
-  const allItems = useLiveQuery( () => notes.toArray(), []);
-  console.log(allItems)
-
-  const addNote = async (e) => {
-    e.preventDefault();
-    // const noteField = document.querySelector('#inputEl');
-    // console.log(taskField.value);
-
-    await notes.add({
-      // task: taskField.value,
-      // completed: false
-      title: 'New Title',
-      text: 'Dfghj dffgh sdfghj',
-      isActive: false
-    })
-
-    // taskField.value = ''
-  }
   return (
-    
-      <BrowserRouter>
+    <BrowserRouter>
+      <NotesProvider>
         <div className="app-container">
-          {/* <SidebarContainer /> */}
-          <Space wrap>
-            <Button type="primary" onClick={addNote}>Primary Button</Button>
-          </Space>
-          <div className="app-wrapper-content">
-          
-              {/* <StateContext.Consumer> */}
+          <div className='sidebar'>
+            <Sidebar />
+          </div>
+          <Workspace />
+          {/* </div> */}
+        </div>
 
-                {/* { 
-                  db => {
-                    let activeNote;
-                    db.notes.forEach(n => {
-                      if(n.isActive) {
-                        activeNote = n;
-                        console.log(n);
-                      }
-                    });
-                    const path = '/note/workspace/' + activeNote.id;
-                    return (
+
+        {/* <Asdasd>
+
+        </Asdasd> */}
+
+      </NotesProvider>
+
+
+      {/* 
+        {
+          db => {
+            let activeNote;
+            db && db.notes.forEach(n => {
+              console.log('All: ', n); 
+              if(n.isActive) {
+                activeNote = n;
+              }
+            });
+            const path = '/note/workspace/' + activeNote.id;
+            console.log(path);
+            return (
+              <div className="app-container">
+                <SidebarContainer />
+                {/* <div className="app-wrapper-content">
                       <Routes>
                         <Route path={path} element={<Workspace activeNote= {activeNote}/>} />
                       </Routes>
-                    )
-                  }
-                } */}
-              {/* <WorkspaceContainer /> */}
-              
-              {/* <Route path="/note/workspace/*" element={<WorkspaceContainer />} />
-              <Route path="/note/all/*" element={<AllNotes />} /> 
-              <Route path="/note/edit/*" element={<Workspace />} /> */}
-            
-            {/* </StateContext.Consumer> */}
+                </div>
+              </div> */}
 
-          </div>
-        </div>
-      </BrowserRouter>
+      {/* </StateContext.Consumer> */}
+    </BrowserRouter>
   );
 }
 

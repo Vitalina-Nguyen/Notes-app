@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useContext } from 'react';
+import { NotesContext } from '../../state/NotesProvider';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import NoteItem from "./NoteItem/NoteItem"
 
-export default function Workspace({activeNote}) {
-  
+export default function Workspace() {
+
+  const notes = useContext(NotesContext);
+ 
+
+  let activeNote;
+  if (notes) {
+    notes.forEach(note => {
+      if (note.isActive) activeNote = note;
+    })
+    
+  }
+
   return (
     <div>
-      <h2>
-            {activeNote.title};
-        </h2>
-        <p>
-            {activeNote.text};
-        </p>
+      {
+        (notes) ?
+          <Routes>
+            <Route path={`note/${(notes) ? activeNote.id : '1'}`} element={<NoteItem activeNote={activeNote} />} />
+          </Routes>
+        : 'loading'
+      }
     </div>
   );
 }
