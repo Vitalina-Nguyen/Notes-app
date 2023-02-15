@@ -1,17 +1,10 @@
-import React from 'react';
-
-
+import React from "react";
 
 export default function NoteItem({ activeNote }) {
-
   return (
     <div>
-        <h2>
-          { activeNote.title } 
-        </h2>
-        <p>
-          { activeNote.text }
-        </p>
+      <h2>df</h2>
+      <p>dfgf</p>
     </div>
   );
 }
