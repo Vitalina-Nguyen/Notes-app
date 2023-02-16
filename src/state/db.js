@@ -6,6 +6,7 @@ db.version(1).stores({
   notes: "++id, title, text, isActive",
 });
 
+
 export const getAllNotes = async () => {
   const data = [];
   await db.notes.each((note) => {
@@ -14,41 +15,32 @@ export const getAllNotes = async () => {
   return data;
 };
 
-export const addNote = async (title, text) => {
-  //   e.preventDefault();
-  // const noteField = document.querySelector('#inputEl');
-  // console.log(taskField.value);
 
-  await db.notes.add({
-    // task: taskField.value,
-    // completed: false
-    title: title,
-    text: text,
-  });
-  // taskField.value = ''
+export const addNote = async (title, text) => {
+
+  // await db.notes.transaction('rw', db.notes, async () => {
+  //   let noteId = 
+    await db.notes.add({
+      title: title,
+      text: text,
+    });
+    // console.log(noteId);
+  // })
+  
+  
 };
 
-export const toggleActive = (id) => {};
+export const deleteNote = async (id) => {
 
-export function getStore() {
-  const Store = {
-    notes: getAllNotes(),
-    addNote: async (e) => {
-      e.preventDefault();
-      // const noteField = document.querySelector('#inputEl');
-      // console.log(taskField.value);
+  await db.notes.delete(id);
+};
 
-      await db.notes.add({
-        // task: taskField.value,
-        // completed: false
-        title: "Title 3",
-        text: "3 Dfghj dffgh sdfghj sdgsfgfgfd sfsdfds",
-        isActive: false,
-      });
-      // taskField.value = ''
-    },
-  };
-  // console.log('ALL NOTES: ', Store.allNotes);
+export const modifyNoteValue = async (id, value, valueType) => {
 
-  return Store;
-}
+  await db.notes.where({ id: id}).modify( note => { 
+    (valueType === 'title') ? 
+    note.title = value
+    : note.text = value;
+  })
+};
+

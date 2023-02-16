@@ -4,25 +4,38 @@ import { getAllNotes } from "./db";
 export const NotesContext = createContext(null);
 
 export const NotesProvider = ({ children }) => {
+
   const [notes, setNotes] = useState(null);
   const [activeId, setActiveId] = useState(1);
-  
+  const [newTitle, setNewTitle] = useState('');
+  const [newText, setNewText] = useState('');
 
-  
-  useEffect(() => {
-    const getNotes = async () => {
+const getNotes = async () => {
       const data = await getAllNotes();
       setNotes(data);
     };
+
+  useEffect(() => {
     getNotes();
   }, []);
 
+  const updateNotesData = () => {
+    getNotes();
+  }
 
-  useEffect(() => {
+  const value = {
+    notes,
+    activeId,
+    setActiveId,
+    newTitle,
+    setNewTitle,
+    newText,
+    setNewText,
+    updateNotesData
+  }
 
-  }, [activeId]);
 
   return (
-    <NotesContext.Provider value={notes}>{children}</NotesContext.Provider>
+    <NotesContext.Provider value={value}>{children}</NotesContext.Provider>
   );
 };

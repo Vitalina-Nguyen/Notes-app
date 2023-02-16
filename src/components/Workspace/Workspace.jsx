@@ -4,33 +4,25 @@ import { NotesContext } from '../../state/NotesProvider';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Note from "./Note/Note"
 import NewNote from "./NewNote/NewNote"
+import NoteEdit from "./NoteEdit/NoteEdit"
 import { Spin } from 'antd';
 
-export default function Workspace({ activeId }) {
+export default function Workspace() {
 
-  const notes = useContext(NotesContext);
+  const state = useContext(NotesContext);
+  const notes = state.notes;
+  const activeId = state.activeId;
 
-  console.log(activeId)
-  let activeNote;
 
-  if (notes) {
-    notes.forEach(note => {
-      if (note.id === activeId) {
-        activeNote = {
-          title: note.title,
-          text: note.text
-        }
-      }
-    })
-  }
 
   return (
     <div>
       {
         (notes) ?
           <Routes>
-            <Route path={`note/${activeId}`} element={<Note activeNote={activeNote} />} />
+            <Route path={`note/${activeId}`} element={<Note />} />
             <Route path='note/new' element={<NewNote />} />
+            <Route path='note/edit' element={<NoteEdit />} />
           </Routes>
           :
           <div className="spin">

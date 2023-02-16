@@ -6,7 +6,8 @@ import '../../scss/components/Sidebar.scss';
 
 export default function Sidebar({ setActiveId }) {
 
-  const notes = useContext(NotesContext);
+  const state = useContext(NotesContext);
+  const notes = state.notes;
 
   return (
     <div className="sidebar-wrapper">
@@ -24,7 +25,7 @@ export default function Sidebar({ setActiveId }) {
                   return (
                     <li key={n.id}>
                       <NavLink to={`/note/${id}`} key={id} onClick={(e) => {
-                        setActiveId(id)
+                        state.setActiveId(id)
                       }}
                         className='sidebar-link'> {n.title} </NavLink>
                     </li>
