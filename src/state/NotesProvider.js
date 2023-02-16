@@ -6,9 +6,9 @@ export const NotesContext = createContext(null);
 export const NotesProvider = ({ children }) => {
   const [notes, setNotes] = useState(null);
   const [activeId, setActiveId] = useState(1);
+  
 
-  const [state, setState] = useState({ notes, activeId, setActiveId });
-
+  
   useEffect(() => {
     const getNotes = async () => {
       const data = await getAllNotes();
@@ -16,7 +16,11 @@ export const NotesProvider = ({ children }) => {
     };
     getNotes();
   }, []);
-  useEffect(() => {}, [notes, activeId]);
+
+
+  useEffect(() => {
+
+  }, [activeId]);
 
   return (
     <NotesContext.Provider value={notes}>{children}</NotesContext.Provider>

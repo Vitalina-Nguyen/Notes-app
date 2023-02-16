@@ -1,27 +1,42 @@
-import React, { useContext } from "react";
-import { NotesContext } from "../../state/NotesProvider";
+import '../../scss/components/Workspace.scss'
+import React, { useContext } from 'react';
+import { NotesContext } from '../../state/NotesProvider';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import NoteItem from "./NoteItem/NoteItem";
+import Note from "./Note/Note"
+import NewNote from "./NewNote/NewNote"
+import { Spin } from 'antd';
 
-export default function Workspace() {
+export default function Workspace({ activeId }) {
+
   const notes = useContext(NotesContext);
 
-  // let activeNote;
+  console.log(activeId)
+  let activeNote;
+
   if (notes) {
-    notes.forEach((note) => {
-      // if (note.isActive) activeNote = note;
-    });
+    notes.forEach(note => {
+      if (note.id === activeId) {
+        activeNote = {
+          title: note.title,
+          text: note.text
+        }
+      }
+    })
   }
 
   return (
     <div>
-      {notes ? (
-        <Routes>
-          <Route path={`note/${notes ? 1 : 1}`} element={<NoteItem />} />
-        </Routes>
-      ) : (
-        "loading"
-      )}
+      {
+        (notes) ?
+          <Routes>
+            <Route path={`note/${activeId}`} element={<Note activeNote={activeNote} />} />
+            <Route path='note/new' element={<NewNote />} />
+          </Routes>
+          :
+          <div className="spin">
+            <Spin />
+          </div>
+      }
     </div>
   );
 }

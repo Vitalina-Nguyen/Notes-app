@@ -2,20 +2,21 @@ import React, { useContext } from 'react';
 import { NotesContext } from '../../state/NotesProvider';
 import { NavLink } from "react-router-dom";
 import '../../scss/components/Sidebar.scss';
-import { toggleActive } from '../../state/db'
 
 
-export default function Sidebar() {
+export default function Sidebar({ setActiveId }) {
 
   const notes = useContext(NotesContext);
-  console.log(notes)
 
   return (
-    <div>
+    <div className="sidebar-wrapper">
       {
         notes ?
           <nav>
             <ul>
+              <li>
+                <NavLink to='/note/new' className='sidebar-link'>New note</NavLink>
+              </li>
               {
                 notes.map(n => {
                   const id = n.id;
@@ -23,16 +24,18 @@ export default function Sidebar() {
                   return (
                     <li key={n.id}>
                       <NavLink to={`/note/${id}`} key={id} onClick={(e) => {
-                        console.log(id)
-                      }}> {n.title} </NavLink>
+                        setActiveId(id)
+                      }}
+                        className='sidebar-link'> {n.title} </NavLink>
                     </li>
                   )
                 })
               }
             </ul>
           </nav>
-          : 'loading...'
+          : ''
       }
+
     </div>
   )
 }

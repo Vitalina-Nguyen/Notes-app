@@ -1,5 +1,15 @@
-nav {
-    max-width: 200px;
+
+.sidebar-wrapper {
+    background: #e7e2e6;
     width: 100%;
-    background: blueviolet;
+    height: 100%;
+}
+li {
+    padding: 10px;
+}
+
+.sidebar-link {
+    color: #2c2b2c;
+    padding: 10px;
+    width: 100%;
 }
