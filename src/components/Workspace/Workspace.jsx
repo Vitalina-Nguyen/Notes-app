@@ -1,4 +1,4 @@
-import '../../scss/components/Workspace.scss'
+import '../../scss/components/Workspace/Workspace.scss'
 import React, { useContext } from 'react';
 import { NotesContext } from '../../state/NotesProvider';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function Workspace() {
         (notes) ?
           <Routes>
             <Route path={`note/${activeId}`} element={<Note />} />
-            <Route path='note/new' element={<NewNote />} />
+            <Route path='/*' element={<NewNote />} />
             <Route path='note/edit' element={<NoteEdit />} />
           </Routes>
           :

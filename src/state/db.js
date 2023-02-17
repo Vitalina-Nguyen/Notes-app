@@ -16,31 +16,45 @@ export const getAllNotes = async () => {
 };
 
 
-export const addNote = async (title, text) => {
+export const getReqNotes = async (phrase) => {
+  const data = [];
 
-  // await db.notes.transaction('rw', db.notes, async () => {
-  //   let noteId = 
-    await db.notes.add({
-      title: title,
-      text: text,
+  await db.notes.where('title')
+    .startsWithIgnoreCase(phrase)
+    .each((note) => {
+      data.push(note);
     });
-    // console.log(noteId);
-  // })
-  
-  
+  return data;
 };
+
+
+export const addNote = async (title, text) => {
+  await db.notes.add({
+    title: title,
+    text: text,
+  })
+
+  return db.transaction('r', [db.notes], async () => {
+    const note = await db.notes.get({ title: title, text: text });
+    return note;
+  });
+
+};
+
 
 export const deleteNote = async (id) => {
-
-  await db.notes.delete(id);
+  await db.notes.where({ id: id }).delete();
 };
 
-export const modifyNoteValue = async (id, value, valueType) => {
 
-  await db.notes.where({ id: id}).modify( note => { 
-    (valueType === 'title') ? 
-    note.title = value
-    : note.text = value;
+export const modifyNoteValue = async (id, value, valueType) => {
+  let editedNote;
+  await db.notes.where({ id: id }).modify(note => {
+    (valueType === 'title') ?
+      note.title = value
+      : note.text = value;
+    editedNote = note;
   })
+  return editedNote;
 };
 

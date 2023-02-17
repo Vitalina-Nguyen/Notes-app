@@ -1,8 +1,7 @@
 import { Col, Row, Button, Input } from "antd";
 import React, { useContext } from 'react';
 import { NotesContext } from '../../../state/NotesProvider'
-import '../../../scss/components/NoteItem.scss'
-import { deleteNote } from "../../../state/db";
+// import '../../../scss/components/NoteItem.scss'
 import { modifyNoteValue } from "../../../state/db";
 import { NavLink } from "react-router-dom";
 
@@ -14,9 +13,21 @@ export default function NoteEdit() {
     const notes = state.notes;
     const activeId = state.activeId;
 
+    const editNote = (e, type) => {
+
+        const notePromise = modifyNoteValue(activeId, e.target.value, type);
+        notePromise.then(newNote => {
+            const newArr = notes.map(note => {
+                return (note.id === newNote.id) 
+                ? newNote : note;
+            })
+            state.setNotes(newArr);
+        })
+    }
+
+
     const valueObj = () => {
         let activeNote;
-
         if (notes) {
             notes.forEach(note => {
                 if (note.id === activeId) {
@@ -30,17 +41,6 @@ export default function NoteEdit() {
         return activeNote;
     }
 
-    const getTitleValue = () => {
-        return notes.forEach(note => {
-            if (note.id === activeId) {
-                console.log(note.title)
-                return note.title;
-            }
-        })
-    }
-
-    console.log(getTitleValue())
-
     return (
         <div>
             <Row>
@@ -53,13 +53,11 @@ export default function NoteEdit() {
             <Row>
                 <Col span={24}>
                     <Input placeholder="Title" onChange={(e) => {
-                        modifyNoteValue(activeId, e.target.value, 'title');
-                        state.updateNotesData();
-                    }} value= {valueObj().title}/>
+                        editNote(e, 'title');
+                    }} value={valueObj().title} />
                     <TextArea rows={4} placeholder="Text..." onChange={(e) => {
-                        modifyNoteValue(activeId, e.target.value, 'text');
-                        state.updateNotesData();
-                    }} value= {valueObj().text}/>
+                        editNote(e, 'text');
+                    }} value={valueObj().text} />
                 </Col>
             </Row>
         </div>
